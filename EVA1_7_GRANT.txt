@@ -1,0 +1,143 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 7
+Server version: 5.5.20 MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306  SQL > \use evaluacion_1
+Default schema set to `evaluacion_1`.
+Fetching table and column names from `evaluacion_1` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| evaluacion_1       |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.0008 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables:
+                                        ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables;
++------------------------+
+| Tables_in_evaluacion_1 |
++------------------------+
+| carrera                |
+| estudiantes            |
+| horario                |
+| jobs                   |
+| materias               |
+| nueva_carrera          |
+| nueva_carrerita        |
+| paises                 |
+| paisesnew              |
+| personal               |
+| personal2              |
++------------------------+
+11 rows in set (0.0046 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select user from mysql;
+ERROR: 1146 (42S02): Table 'evaluacion_1.mysql' doesn't exist
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select user from mysql.user;
++------+
+| user |
++------+
+| root |
++------+
+1 row in set (0.0155 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create user 'francisco'@'localhost' identified by '2018';
+Query OK, 0 rows affected (0.0602 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from evaluacion_1;
+ERROR: 1146 (42S02): Table 'evaluacion_1.evaluacion_1' doesn't exist
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from estudiantes;
+Empty set (0.0005 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | YES  |     | NULL    |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
+| no_telefono      | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+10 rows in set (0.0045 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant select (no__control, nombre, apellido_paterno, apellido_materno) on evalucion_1.estudiantes to 'francisco'@'localhost';
+ERROR: 1146 (42S02): Table 'evalucion_1.estudiantes' doesn't exist
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant select (no__control, nombre, apellido_paterno, apellido_materno) on evaluacion_1.estudiantes to 'francisco'@'localhost';
+ERROR: 1054 (42S22): Unknown column 'no__control' in 'estudiantes'
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant select (no_control, nombre, apellido_paterno, apellido_materno) on evaluacion_1.estudiantes to 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0005 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant select (nombre), insert (nombre, creditos) on evaluacion_1.materias to 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0006 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant insert, update on evaluacion_1.carrera to 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0005 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant select on evaluacion_1.paises to 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0005 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant all on evaluacion_1.carrera to 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > revoke delete on evaluacion_1.carrera to 'francisco'@'localhost';
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to 'francisco'@'localhost'' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > revoke delete on evaluacion_1.carrera from 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > grant drop on evaluacion_1.personal to 'francisco'@'localhost';
+Query OK, 0 rows affected (0.0005 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show grants for 'francisco'@'localhost';
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for francisco@localhost                                                                                                                               |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'francisco'@'localhost' IDENTIFIED BY PASSWORD '*E0D47D5AF77B4680E6DF7DC079EA262C89E5AD80'                                             |
+| GRANT SELECT (nombre), INSERT (creditos, nombre) ON `evaluacion_1`.`materias` TO 'francisco'@'localhost'                                                     |
+| GRANT DROP ON `evaluacion_1`.`personal` TO 'francisco'@'localhost'                                                                                           |
+| GRANT SELECT ON `evaluacion_1`.`paises` TO 'francisco'@'localhost'                                                                                           |
+| GRANT SELECT (no_control, nombre, apellido_materno, apellido_paterno) ON `evaluacion_1`.`estudiantes` TO 'francisco'@'localhost'                             |
+| GRANT SELECT, INSERT, UPDATE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER ON `evaluacion_1`.`carrera` TO 'francisco'@'localhost' |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+6 rows in set (0.0002 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL >

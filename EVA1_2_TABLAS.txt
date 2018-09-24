@@ -1,0 +1,278 @@
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 1
+Server version: 5.5.20 MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306  SQL > show databases
+                          ... ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+4 rows in set (0.0007 sec)
+
+ MySQL  localhost:3306  SQL > create database evaluacion_1;
+Query OK, 1 row affected (0.0018 sec)
+
+ MySQL  localhost:3306  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| evaluacion_1       |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.0007 sec)
+
+ MySQL  localhost:3306  SQL > \use evaluacion_1
+Default schema set to `evaluacion_1`.
+Fetching table and column names from `evaluacion_1` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables;
+Empty set (0.0005 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table materias(
+                                        ... nombre varchar(100),
+                                        ... creditos int,
+                                        ... horas_teorias int,
+                                        ... horas_practicas int,
+                                        ... carrera varchar(3),
+                                        ... semestre int);
+Query OK, 0 rows affected (0.1537 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables;
++------------------------+
+| Tables_in_evaluacion_1 |
++------------------------+
+| materias               |
++------------------------+
+1 row in set (0.0007 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc materias;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| nombre          | varchar(100) | YES  |     | NULL    |       |
+| creditos        | int(11)      | YES  |     | NULL    |       |
+| horas_teorias   | int(11)      | YES  |     | NULL    |       |
+| horas_practicas | int(11)      | YES  |     | NULL    |       |
+| carrera         | varchar(3)   | YES  |     | NULL    |       |
+| semestre        | int(11)      | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+6 rows in set (0.0213 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table estudiantes (
+                                        ... no_control varchar(10),
+                                        ... nombre varchar(50),
+                                        ... apellido_paterno varchar(50),
+                                        ... apellido_materno varchar(50),
+                                        ... direccion varchar(100),
+                                        ... fecha_nacimiento date,
+                                        ... lugar_nacimiento varchar(50),
+                                        ... pais_nacimiento varchar(50),
+                                        ... genero varchar(50));
+Query OK, 0 rows affected (0.2074 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tablesM
+                                        ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tablesM' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables;
++------------------------+
+| Tables_in_evaluacion_1 |
++------------------------+
+| estudiantes            |
+| materias               |
++------------------------+
+2 rows in set (0.0011 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc materias;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| nombre          | varchar(100) | YES  |     | NULL    |       |
+| creditos        | int(11)      | YES  |     | NULL    |       |
+| horas_teorias   | int(11)      | YES  |     | NULL    |       |
+| horas_practicas | int(11)      | YES  |     | NULL    |       |
+| carrera         | varchar(3)   | YES  |     | NULL    |       |
+| semestre        | int(11)      | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+6 rows in set (0.0040 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | YES  |     | NULL    |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+9 rows in set (0.0044 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create temporary table temporal(
+                                        ... nombre varchar(50));
+Query OK, 0 rows affected (0.0530 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables
+                                        ... ;
++------------------------+
+| Tables_in_evaluacion_1 |
++------------------------+
+| estudiantes            |
+| materias               |
++------------------------+
+2 rows in set (0.0008 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from estudiantes;
+Empty set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from estudiante1;
+ERROR: 1146 (42S02): Table 'evaluacion_1.estudiante1' doesn't exist
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from temporal;
+Empty set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table condenada(
+                                        ... no_por_favor int);
+Query OK, 0 rows affected (0.1608 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables;
++------------------------+
+| Tables_in_evaluacion_1 |
++------------------------+
+| condenada              |
+| estudiantes            |
+| materias               |
++------------------------+
+3 rows in set (0.0008 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > drop table condenada;
+Query OK, 0 rows affected (0.0339 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > show tables;
++------------------------+
+| Tables_in_evaluacion_1 |
++------------------------+
+| estudiantes            |
+| materias               |
++------------------------+
+2 rows in set (0.0007 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | YES  |     | NULL    |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+9 rows in set (0.0042 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table estudiante
+                                        ... add column no_telefono varchar(50);
+ERROR: 1146 (42S02): Table 'evaluacion_1.estudiante' doesn't exist
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table estudiantes add column no_telefono varchar(50);
+Query OK, 0 rows affected (0.1762 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | YES  |     | NULL    |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
+| no_telefono      | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+10 rows in set (0.0045 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table estudiantes add column correo varchar(50) after direccion;
+Query OK, 0 rows affected (0.3473 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL >
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | YES  |     | NULL    |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| correo           | varchar(50)  | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
+| no_telefono      | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+11 rows in set (0.0049 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table estudiantes drop correo;
+Query OK, 0 rows affected (0.1608 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | YES  |     | NULL    |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
+| no_telefono      | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+10 rows in set (0.0043 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL >

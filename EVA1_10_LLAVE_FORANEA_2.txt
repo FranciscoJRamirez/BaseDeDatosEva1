@@ -1,0 +1,345 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 5.5.20 MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306  SQL > \use evaluacion_1
+Default schema set to `evaluacion_1`.
+Fetching table and column names from `evaluacion_1` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from facturas;
++------------+---------------------+------------+
+| no_factura | fecha_compra        | no_cliente |
++------------+---------------------+------------+
+|          3 | 2018-09-12 00:00:00 |          1 |
++------------+---------------------+------------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table factura_detalles(
+                                        ... clave int auto_increment primary key,
+                                        ... no_factura int constraint foreign key facturas(no_factura),
+                                        ... no_producto int constraint foreign key productos(no_producto),
+                                        ... cantidad int,
+                                        ... descuento float,
+                                        ... precio float);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint foreign key facturas(no_factura),
+no_producto int constraint foreign ' at line 3
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table factura_detalles( clave int auto_increment primary key, no_factura int, no_producto int, cantidad int, descuento float,  precio float, foreign key (no_factura) references facturas(no_factura), foreign key (no_producto) references productos(no_producto);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table factura_detalles( clave int auto_increment primary key, no_factura int, no_producto int, cantidad int, descuento float,  precio float, foreign key (no_factura) references facturas(no_factura), foreign key (no_producto) references productos(no_producto));
+ERROR: 1005 (HY000): Can't create table 'evaluacion_1.factura_detalles' (errno: 150)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table factura_detalles( clave int auto_increment primary key, no_factura int, no_producto int, cantidad int, descuento float,  precio float, foreign key (no_factura) references facturas(no_factura));
+Query OK, 0 rows affected (0.1434 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > drop factura_detalles;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'factura_detalles' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > drop table factura_detalles;
+Query OK, 0 rows affected (0.0592 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table factura_detalles( clave int auto_increment primary key, no_factura int, no_producto int, cantidad int, descuento float,  precio float, foreign key (no_factura) references facturas(no_factura) on update cascade on delete restrict, foreign key (no_producto) references productos(no_producto) on update cascade on delete cascade);
+ERROR: 1005 (HY000): Can't create table 'evaluacion_1.factura_detalles' (errno: 150)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table factura_detalles( clave int auto_increment primary key, no_factura int references facturas(no_factura) on update cascade on delete cascade, no_producto int references productos(no_producto) on update cascade on delete cascade, cantidad int, descuento float, precio float);
+Query OK, 0 rows affected (0.0882 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into productow
+                                        ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc factura_detalles;
++-------------+---------+------+-----+---------+----------------+
+| Field       | Type    | Null | Key | Default | Extra          |
++-------------+---------+------+-----+---------+----------------+
+| clave       | int(11) | NO   | PRI | NULL    | auto_increment |
+| no_factura  | int(11) | YES  |     | NULL    |                |
+| no_producto | int(11) | YES  |     | NULL    |                |
+| cantidad    | int(11) | YES  |     | NULL    |                |
+| descuento   | float   | YES  |     | NULL    |                |
+| precio      | float   | YES  |     | NULL    |                |
++-------------+---------+------+-----+---------+----------------+
+6 rows in set (0.0049 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc productos;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| no_productos | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre       | varchar(50) | YES  |     | NULL    |                |
+| precio       | float       | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0042 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into productos (nombre, precio) values('lamo', 105.32);
+Query OK, 1 row affected (0.0518 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into factura_detalles(no_facturas, no_productos, cantidad, precio) values (3, 7, 5, 32.2);
+ERROR: 1054 (42S22): Unknown column 'no_facturas' in 'field list'
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into factura_detalles(no_factura, no_productos, cantidad, precio) values (3, 7, 5, 32.2);
+ERROR: 1054 (42S22): Unknown column 'no_productos' in 'field list'
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into factura_detalles(no_factura, no_producto, cantidad, precio) values (3, 7, 5, 32.2);
+Query OK, 1 row affected (0.0342 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > delete from factura_detalles;
+Query OK, 1 row affected (0.0938 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table factura_detalles add constraint foreign key (no_factura) references facturas (no_factura) on update cascade on delete cascade;
+Query OK, 0 rows affected (0.1762 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table factura_detalles add constraint foreign key (no_producto) references productos (no_producto) on update cascade on delete restraint;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'restraint' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table factura_detalles add constraint foreign key (no_producto) references productos (no_producto) on update cascade on delete restrict;
+ERROR: 1005 (HY000): Can't create table 'evaluacion_1.#sql-9f4_9' (errno: 150)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc factura_detalles;
++-------------+---------+------+-----+---------+----------------+
+| Field       | Type    | Null | Key | Default | Extra          |
++-------------+---------+------+-----+---------+----------------+
+| clave       | int(11) | NO   | PRI | NULL    | auto_increment |
+| no_factura  | int(11) | YES  | MUL | NULL    |                |
+| no_producto | int(11) | YES  |     | NULL    |                |
+| cantidad    | int(11) | YES  |     | NULL    |                |
+| descuento   | float   | YES  |     | NULL    |                |
+| precio      | float   | YES  |     | NULL    |                |
++-------------+---------+------+-----+---------+----------------+
+6 rows in set (0.0043 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table factura_detalles add constraint foreign key (no_producto) references productos (no_productos) on update cascade on delete restrict;
+Query OK, 0 rows affected (0.1537 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc factura_detalles;
++-------------+---------+------+-----+---------+----------------+
+| Field       | Type    | Null | Key | Default | Extra          |
++-------------+---------+------+-----+---------+----------------+
+| clave       | int(11) | NO   | PRI | NULL    | auto_increment |
+| no_factura  | int(11) | YES  | MUL | NULL    |                |
+| no_producto | int(11) | YES  | MUL | NULL    |                |
+| cantidad    | int(11) | YES  |     | NULL    |                |
+| descuento   | float   | YES  |     | NULL    |                |
+| precio      | float   | YES  |     | NULL    |                |
++-------------+---------+------+-----+---------+----------------+
+6 rows in set (0.0043 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into factura_detalles(no_factura, no_producto, cantidad, precio) values (3, 7, 5, 32.2);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`evaluacion_1`.`factura_detalles`, CONSTRAINT `factura_detalles_ibfk_2` FOREIGN KEY (`no_producto`) REFERENCES `productos` (`no_productos`) ON UPDATE CASCADE)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > insert into factura_detalles(no_factura, no_producto, cantidad, precio) values (3, 1, 5, 32.2);
+Query OK, 1 row affected (0.0266 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from factura_detalles;
++-------+------------+-------------+----------+-----------+--------+
+| clave | no_factura | no_producto | cantidad | descuento | precio |
++-------+------------+-------------+----------+-----------+--------+
+|     3 |          3 |           1 |        5 |      NULL |   32.2 |
++-------+------------+-------------+----------+-----------+--------+
+1 row in set (0.0002 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > update productos
+                                        ... set no_productos=10,
+                                        ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+
+ MySQL  localhost:3306  evaluacion_1  SQL > update productos set no_productos=1o where no_productos=1;
+ERROR: 1054 (42S22): Unknown column '1o' in 'field list'
+
+ MySQL  localhost:3306  evaluacion_1  SQL > update productos set no_productos=1 where no_productos=1;
+Query OK, 0 rows affected (0.0003 sec)
+
+Rows matched: 1  Changed: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from factura_detalles;
++-------+------------+-------------+----------+-----------+--------+
+| clave | no_factura | no_producto | cantidad | descuento | precio |
++-------+------------+-------------+----------+-----------+--------+
+|     3 |          3 |           1 |        5 |      NULL |   32.2 |
++-------+------------+-------------+----------+-----------+--------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > update productos set no_productos=10 where no_productos=1;
+Query OK, 1 row affected (0.1255 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > select * from factura_detalles;
++-------+------------+-------------+----------+-----------+--------+
+| clave | no_factura | no_producto | cantidad | descuento | precio |
++-------+------------+-------------+----------+-----------+--------+
+|     3 |          3 |          10 |        5 |      NULL |   32.2 |
++-------+------------+-------------+----------+-----------+--------+
+1 row in set (0.0002 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc estudiantes;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| no_control       | varchar(10)  | NO   | PRI |         |       |
+| nombre           | varchar(50)  | YES  |     | NULL    |       |
+| apellido_paterno | varchar(50)  | YES  |     | NULL    |       |
+| apellido_materno | varchar(50)  | YES  |     | NULL    |       |
+| direccion        | varchar(100) | YES  |     | NULL    |       |
+| fecha_nacimiento | date         | YES  |     | NULL    |       |
+| lugar_nacimiento | varchar(50)  | YES  |     | NULL    |       |
+| pais_nacimiento  | varchar(50)  | YES  |     | NULL    |       |
+| genero           | varchar(50)  | YES  |     | NULL    |       |
+| no_telefono      | varchar(50)  | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+10 rows in set (0.0039 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc materias;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| nombre          | varchar(100) | NO   | PRI |         |       |
+| creditos        | int(11)      | YES  |     | NULL    |       |
+| horas_teorias   | int(11)      | YES  |     | NULL    |       |
+| horas_practicas | int(11)      | YES  |     | NULL    |       |
+| carrera         | varchar(3)   | YES  |     | NULL    |       |
+| semestre        | int(11)      | NO   | PRI | 0       |       |
++-----------------+--------------+------+-----+---------+-------+
+6 rows in set (0.0221 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc carrera;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| nombre   | varchar(50) | NO   | PRI |         |       |
+| creditos | int(11)     | YES  |     | NULL    |       |
+| semestre | int(11)     | YES  |     | NULL    |       |
+| area     | varchar(50) | NO   | PRI |         |       |
++----------+-------------+------+-----+---------+-------+
+4 rows in set (0.0044 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table carrera drop primary key;
+Query OK, 0 rows affected (0.1981 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table carrera add column cve_carrera int primary key auto_increment;
+Query OK, 0 rows affected (0.3527 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc table carrera;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table carrera' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc carrera;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| nombre      | varchar(50) | NO   |     |         |                |
+| creditos    | int(11)     | YES  |     | NULL    |                |
+| semestre    | int(11)     | YES  |     | NULL    |                |
+| area        | varchar(50) | NO   |     |         |                |
+| cve_carrera | int(11)     | NO   | PRI | NULL    | auto_increment |
++-------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0045 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table materias drop primary key;
+Query OK, 2 rows affected (0.2384 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table materias add column cve_materia int primary key auto_increment;
+Query OK, 2 rows affected (0.2559 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc materias;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| nombre          | varchar(100) | NO   |     |         |                |
+| creditos        | int(11)      | YES  |     | NULL    |                |
+| horas_teorias   | int(11)      | YES  |     | NULL    |                |
+| horas_practicas | int(11)      | YES  |     | NULL    |                |
+| carrera         | varchar(3)   | YES  |     | NULL    |                |
+| semestre        | int(11)      | NO   |     | 0       |                |
+| cve_materia     | int(11)      | NO   | PRI | NULL    | auto_increment |
++-----------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.0043 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table horario(
+                                        ... cve_horario int primary key auto_increment,
+                                        ... cve_materia int,
+                                        ... cve_carrera int,
+                                        ... no_control varchar(10));
+ERROR: 1050 (42S01): Table 'horario' already exists
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc horario;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| materia         | varchar(50) | YES  |     | NULL    |       |
+| salon           | varchar(10) | YES  |     | NULL    |       |
+| profesor        | varchar(50) | YES  |     | NULL    |       |
+| hora            | time        | YES  |     | NULL    |       |
+| dia             | date        | YES  |     | NULL    |       |
+| no_control      | varchar(20) | YES  |     | NULL    |       |
+| carrera         | varchar(50) | YES  |     | NULL    |       |
+| creditos        | int(11)     | YES  |     | NULL    |       |
+| semestre_actual | int(11)     | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+9 rows in set (0.0052 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > create table horario2( cve_horario int primary key auto_increment, cve_materia int, cve_carrera int, no_control varchar(10));
+Query OK, 0 rows affected (0.1186 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table horario2 add constraint foreign key (cve_materia) reference materias (cve_materia) on update cascade on delete restrict;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference materias (cve_materia) on update cascade on delete restrict' at line 1
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table horario2 add constraint foreign key (cve_materia) references materias (cve_materia) on update cascade on delete restrict;
+Query OK, 0 rows affected (0.1896 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table horario2 add constraint foreign key (cve_carrera) references carrera (cve_carrera) on update cascade on delete restrict;
+Query OK, 0 rows affected (0.2424 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > alter table horario2 add constraint foreign key (no_control) references estudiantes (no_control) on update cascade on delete cascade;
+Query OK, 0 rows affected (0.2715 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_1  SQL > desc horario2;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| cve_horario | int(11)     | NO   | PRI | NULL    | auto_increment |
+| cve_materia | int(11)     | YES  | MUL | NULL    |                |
+| cve_carrera | int(11)     | YES  | MUL | NULL    |                |
+| no_control  | varchar(10) | YES  | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0044 sec)
+
+ MySQL  localhost:3306  evaluacion_1  SQL >

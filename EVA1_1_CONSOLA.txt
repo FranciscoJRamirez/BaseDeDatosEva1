@@ -1,0 +1,125 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.12 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+6 rows in set (0.0028 sec)
+
+ MySQL  localhost:3306 ssl  SQL > \use world
+Default schema set to `world`.
+Fetching table and column names from `world` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  world  SQL > show tables;
++-----------------+
+| Tables_in_world |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
++-----------------+
+3 rows in set (0.0055 sec)
+
+ MySQL  localhost:3306 ssl  world  SQL > create table prueba (nombre text);
+Query OK, 0 rows affected (0.7391 sec)
+
+ MySQL  localhost:3306 ssl  world  SQL > show tables;
++-----------------+
+| Tables_in_world |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
+| prueba          |
++-----------------+
+4 rows in set (0.0034 sec)
+
+ MySQL  localhost:3306 ssl  world  SQL > desc table
+                                     ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table' at line 1
+
+ MySQL  localhost:3306 ssl  world  SQL > desc prueba;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| nombre | text | YES  |     | NULL    |       |
++--------+------+------+-----+---------+-------+
+1 row in set (0.0046 sec)
+
+ MySQL  localhost:3306 ssl  world  SQL > create user 'francisco'@'localhost' identified by '241097';
+Query OK, 0 rows affected (0.2406 sec)
+
+ MySQL  localhost:3306 ssl  world  SQL > \connect -c francisco@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'francisco@localhost'
+Please provide the password for 'francisco@localhost': ******
+Save password for 'francisco@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Closing old connection...
+Your MySQL connection id is 9
+Server version: 8.0.12 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > select * from mysql.user;
+ERROR: 1142 (42000): SELECT command denied to user 'francisco'@'localhost' for table 'user'
+
+ MySQL  localhost:3306 ssl  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ***
+MySQL Error 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+
+ MySQL  localhost:3306 ssl  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Closing old connection...
+Your MySQL connection id is 11
+Server version: 8.0.12 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > select * from mysql.user;
++-----------+------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+------------------+----------------+---------------------+--------------------+------------------+------------+--------------+------------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+----------------------+-----------------------+------------------------------------------------------------------------+------------------+-----------------------+-------------------+----------------+------------------+----------------+------------------------+---------------------+
+| Host      | User             | Select_priv | Insert_priv | Update_priv | Delete_priv | Create_priv | Drop_priv | Reload_priv | Shutdown_priv | Process_priv | File_priv | Grant_priv | References_priv | Index_priv | Alter_priv | Show_db_priv | Super_priv | Create_tmp_table_priv | Lock_tables_priv | Execute_priv | Repl_slave_priv | Repl_client_priv | Create_view_priv | Show_view_priv | Create_routine_priv | Alter_routine_priv | Create_user_priv | Event_priv | Trigger_priv | Create_tablespace_priv | ssl_type | ssl_cipher | x509_issuer | x509_subject | max_questions | max_updates | max_connections | max_user_connections | plugin                | authentication_string                                                  | password_expired | password_last_changed | password_lifetime | account_locked | Create_role_priv | Drop_role_priv | Password_reuse_history | Password_reuse_time |
++-----------+------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+------------------+----------------+---------------------+--------------------+------------------+------------+--------------+------------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+----------------------+-----------------------+------------------------------------------------------------------------+------------------+-----------------------+-------------------+----------------+------------------+----------------+------------------------+---------------------+
+| %         | javi             | Y           | Y           | Y           | Y           | Y           | Y         | Y           | Y             | Y            | Y         | Y          | Y               | Y          | Y          | Y            | Y          | Y                     | Y                | Y            | Y               | Y                | Y                | Y              | Y                   | Y                  | Y                | Y          | Y            | Y                      |          |            |             |              |             0 |           0 |               ].||YItSL;aMZ:Md.rq7.wj6IXyMYcGybbz6NdkF3ytcLj7ZYhxgX1szpB | N                | 2018-08-28 22:37:54   |              NULL | N              | N                | N              |                   NULL |                NULL |
+| localhost | francisco        | N           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | N          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | caching_sha2_password | $A$005$dAd|O#Gewl&}hSg9KZxJfpalpVdBiZJjV18wvdP6HaQdVL9gj9y5UeC6 | N                | 2018-09-03 19:30:38   |              NULL | N              | N                | N              |                   NULL |                NULL |
+| localhost | mysql.infoschema | Y           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | N          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | caching_sha2_password | $A$005$THISISACOMBINATIONOFINVALIDSALTANDPASSWORDTHATMUSTNEVERBRBEUSED | N                | 2018-08-28 22:37:11   |              NULL | Y              | N                | N              |                   NULL |                NULL |
+| localhost | mysql.session    | N           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | Y          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | caching_sha2_password | $A$005$THISISACOMBINATIONOFINVALIDSALTANDPASSWORDTHATMUSTNEVERBRBEUSED | N                | 2018-08-28 22:37:09   |              NULL | Y              | N                | N              |                   NULL |                NULL |
+| localhost | mysql.sys        | N           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | N          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | caching_sha2_password | $A$005$THISISACOMBINATIONOFINVALIDSALTANDPASSWORDTHATMUSTNEVERBRBEUSED | N                | 2018-08-28 22:37:11   |              NULL | Y              | N                | N              |                   NULL |                NULL |
+| localhost | root             | Y           | Y           | Y           | Y           | Y           | Y         | Y           | Y             | Y            | Y         | Y          | Y               | Y          | Y          | Y            | Y          | Y                     | Y                | Y            | Y               | Y                | Y                | Y              | Y                   | Y                  | Y                | Y          | Y            | Y                      |          |            |             |              |             0 |           0 |               0 |                    0 | caching_sha2_password | $A$005$W0i7mIH/CMT /678w9ihAhhUwu.iRwzS4WIdpt0j8Dq3dBgaXKcGuyDaBB | N                | 2018-08-28 22:37:53   |              NULL | N              | Y                | Y              |                   NULL |                NULL |
++-----------+------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+------------------+----------------+---------------------+--------------------+------------------+------------+--------------+------------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+----------------------+-----------------------+------------------------------------------------------------------------+------------------+-----------------------+-------------------+----------------+------------------+----------------+------------------------+---------------------+
+6 rows in set (0.0019 sec)
+
+ MySQL  localhost:3306 ssl  SQL >
